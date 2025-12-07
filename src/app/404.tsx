@@ -1,9 +1,6 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Custom404() {
-  const router = useRouter();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 px-4">
@@ -33,19 +30,13 @@ export default function Custom404() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={() => router.back()}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200"
-          >
+          <Link href="javascript:history.back()" className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200 text-center">
             返回上一页
-          </button>
+          </Link>
           
-          <button
-            onClick={() => router.push('/')}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium rounded-lg transition-colors duration-200"
-          >
+          <Link href="/" className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium rounded-lg transition-colors duration-200 text-center">
             回到首页
-          </button>
+          </Link>
         </div>
       </div>
     </div>
