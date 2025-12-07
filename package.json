@@ -6,12 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:init": "npx tsx src/scripts/init-db.ts",
+    "db:push-schema": "npx tsx src/scripts/push-schema.ts",
+    "db:add-category": "npx tsx src/scripts/add-category-field.ts",
+    "supabase:rls-fix": "echo '请参考 SUPABASE_RLS_FIX.md 文件了解如何解决行级安全策略问题'"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.86.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
+    "lucide-react": "^0.554.0",
+    "nanoid": "^5.1.6",
     "next": "16.0.3",
+    "postgres": "^3.4.7",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-hook-form": "^7.68.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -19,9 +41,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "baseline-browser-mapping": "^2.9.3",
+    "drizzle-kit": "^0.31.7",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }
