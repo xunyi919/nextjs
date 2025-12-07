@@ -28,8 +28,10 @@ const Header = () => {
   // 将主题写回到 html[data-theme] 并持久化
   useEffect(() => {
     try {
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
+      if (typeof window !== 'undefined') {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+      }
     } catch (e) {
       // ignore
     }
