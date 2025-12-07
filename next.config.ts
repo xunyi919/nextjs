@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
   
   // 添加安全相关的配置
   poweredByHeader: false, // 要禁用 X-Powered-By 头部
