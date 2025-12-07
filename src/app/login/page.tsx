@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function LoginPage() {
+// 创建一个独立的组件来处理需要 useSearchParams 的逻辑
+function LoginContent() {
     const { user, loading, signInWithGithub, signInWithEmail, signUpWithEmail } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -185,5 +186,18 @@ export default function LoginPage() {
                 </Card>
             </div>
         </div>
+    );
+}
+
+// 主组件包装在 Suspense 中
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen decorative-bg">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     );
 }

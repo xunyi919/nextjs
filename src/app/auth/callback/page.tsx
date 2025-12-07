@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { getSupabaseClient } from "@/lib/supabase/client";
 
-export default function AuthCallbackPage() {
+// 创建一个独立的组件来处理需要 useSearchParams 的逻辑
+function AuthCallbackContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { user, loading } = useAuth();
@@ -58,5 +59,21 @@ export default function AuthCallbackPage() {
                 <p className="text-sm text-gray-500 mt-2">如果长时间停留在此页面，请刷新页面或重新登录。</p>
             </div>
         </div>
+    );
+}
+
+// 主组件包装在 Suspense 中
+export default function AuthCallbackPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold mb-4">正在加载...</h2>
+                    <p>请稍候</p>
+                </div>
+            </div>
+        }>
+            <AuthCallbackContent />
+        </Suspense>
     );
 }
