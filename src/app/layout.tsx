@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context/auth-context";
 import Layout from "@/components/layout";
+import { Web3Providers } from "@/components/web3-provider";
 
 export const metadata: Metadata = {
   title: "现代化博客系统",
@@ -17,9 +18,11 @@ export default function RootLayout({
     <html lang="zh-CN">
       <body>
         <AuthProvider>
-          <Layout>
-            {children}
-          </Layout>
+          <Web3Providers>
+            <Layout>
+              {children}
+            </Layout>
+          </Web3Providers>
         </AuthProvider>
       </body>
     </html>

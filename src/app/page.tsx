@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { getAllPosts } from "@/lib/supabase/helpers";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { TipButton } from "@/components/tip-button";
+import { WithdrawButton } from "@/components/withdraw-button";
+import { useToast } from "@/components/ui/use-toast";
 
 // 定义文章类型
 interface Post {
@@ -23,6 +26,9 @@ interface Post {
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tipSuccess, setTipSuccess] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,18 +37,65 @@ export default function Home() {
         setPosts(allPosts);
       } catch (error) {
         console.error("获取文章列表失败:", error);
+        setError("获取文章列表失败");
       } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, []);
+  }, [tipSuccess]);
+
+  // 处理打赏成功事件
+  useEffect(() => {
+    if (tipSuccess) {
+      toast({
+        title: "打赏成功",
+        description: "感谢您的支持！文章列表已更新。",
+      });
+      
+      // 使用setTimeout避免无限循环
+      const timer = setTimeout(() => {
+        setTipSuccess(false); // 重置状态
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [tipSuccess, toast]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-red-500 text-center">
+          <p className="text-xl font-semibold mb-2">{error}</p>
+          <button 
+            onClick={async () => {
+              setError(null);
+              setLoading(true);
+              // 重新获取文章列表
+              try {
+                const allPosts = await getAllPosts();
+                setPosts(allPosts);
+              } catch (error) {
+                console.error("获取文章列表失败:", error);
+                setError("获取文章列表失败");
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            重新加载
+          </button>
+        </div>
       </div>
     );
   }
@@ -86,6 +139,8 @@ export default function Home() {
                     {/* className="bg-white/10 backdrop-blur-md border-2 border-white/30 text-white hover:bg-white/20 font-semibold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105" */}
                     <Link href="/categories">浏览分类</Link>
                   </Button>
+                  <TipButton onTipSuccess={() => setTipSuccess(true)} />
+                  <WithdrawButton />
                 </div>
               </div>
             </div>
