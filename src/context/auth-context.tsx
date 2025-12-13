@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabaseClient();
 
     useEffect(() => {
-        
+
         // 检查当前用户会话
         const checkSession = async () => {
             try {
@@ -68,10 +68,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const signInWithGithub = async () => {
+        // 使用环境变量中的站点URL，如果不存在则回退到window.location.origin
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
+            (typeof window !== 'undefined' ? window.location.origin : '');
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
-                redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : '',
+                redirectTo: `${siteUrl}/auth/callback`,
             },
         });
 
